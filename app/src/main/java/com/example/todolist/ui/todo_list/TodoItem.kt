@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,10 +30,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.todolist.data.Todo
-import com.example.todolist.ui.theme.Grey20
 
 @Composable
 fun TodoItem(
@@ -63,22 +62,24 @@ fun TodoItem(
                         modifier = Modifier.padding(10.dp),
                         onCheckedChange = { isChecked ->
                             onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
-                        },
-                        color = Grey20
+                        }
                     )
                     Column(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Row (
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
                                 text = todo.title,
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(10.dp)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(Modifier.weight(1f).fillMaxHeight())
                             Button(
+                                modifier = Modifier
+                                    .height(25.dp)
+                                    .padding(end = 10.dp),
                                 onClick = {
                                     onEvent(TodoListEvent.OnDeleteTodoClick(todo))
                                 },
@@ -86,8 +87,6 @@ fun TodoItem(
                                     containerColor = MaterialTheme.colorScheme.errorContainer,
                                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                                 ),
-                                modifier = Modifier
-                                    .height(25.dp),
                                 contentPadding = PaddingValues(horizontal = 6.dp)
                             ) {
                                 Row(
@@ -126,8 +125,7 @@ fun TodoItem(
 fun CircleCheckBox(
     isChecked: Boolean,
     modifier: Modifier = Modifier,
-    onCheckedChange: ((Boolean) -> Unit)?,
-    color: Color,
+    onCheckedChange: ((Boolean) -> Unit)?
 ) {
     Box(
         modifier = modifier
